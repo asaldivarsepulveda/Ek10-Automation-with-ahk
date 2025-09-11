@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AHK Script Generator</title>
+    <!-- Tailwind CSS for a clean, responsive design -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        /* Custom table styling for better visual separation and readability */
+        #dataTable table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem; /* text-sm */
+        }
+        #dataTable th, #dataTable td {
+            padding: 0.75rem; /* p-3 */
+            border: 1px solid #e5e7eb; /* border-gray-200 */
+        }
+        #dataTable th {
+            background-color: #f9fafb; /* bg-gray-50 */
+            text-align: left;
+            font-weight: 600; /* font-semibold */
+        }
+        #dataTable tbody tr:nth-child(odd) {
+            background-color: #f9fafb;
+        }
+    </style>
+    <!-- xlsx.js library to read Excel files -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body class="p-4 sm:p-8 md:p-12 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
+        <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
+            AHK Script Generator
+        </h1>
+        <p class="text-center text-gray-600 mb-8">
+            Upload an Excel file to generate an AutoHotkey script.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Left side: Controls -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    Paso 1: Carga tu archivo
+                </h2>
+                <div class="mb-4">
+                    <label for="excelFile" class="block text-gray-700 font-medium mb-2">
+                        Selecciona tu Excel (.xlsx, .xls)
+                    </label>
+                    <input type="file" id="excelFile" accept=".xlsx, .xls" class="w-full text-sm text-gray-500
+                        file:mr-4 file:py-2 file:px-4
+                        file:rounded-full file:border-0
+                        file:text-sm file:font-semibold
+                        file:bg-blue-50 file:text-blue-700
+                        hover:file:bg-blue-100 transition-colors duration-200" />
+                </div>
+                <button id="generateBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-transform duration-200 transform hover:scale-105">
+                    Generate Script
+                </button>
+                <div id="statusMessage" class="mt-4 text-center text-gray-600"></div>
+            </div>
+
+            <!-- Right side: Script Output -->
+            <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    Paso 2: Descarga tu archivo
+                </h2>
+                <textarea id="ahkScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Your AutoHotkey script will appear here..."></textarea>
+                <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                    <button id="downloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
+                        Descargar Script
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section for the data table -->
+        <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
+            <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                Tabla de datos
+            </h2>
+            <div id="dataTable" class="overflow-x-auto rounded-lg border border-gray-300">
+                <!-- Table will be injected here by JavaScript -->
+                <div class="p-4 text-gray-500 text-center">
+                    La tabla aparecera cuando se carguen datos.
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('excelFile');
+            const generateBtn = document.getElementById('generateBtn');
+            const ahkScriptOutput = document.getElementById('ahkScriptOutput');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const statusMessage = document.getElementById('statusMessage');
+            const dataTableContainer = document.getElementById('dataTable');
+
+            // Download button logic
+            downloadBtn.addEventListener('click', () => {
+                const scriptContent = ahkScriptOutput.value;
+                if (!scriptContent) {
+                    statusMessage.textContent = 'No script to download. Please generate it first.';
+                    return;
+                }
+
+                // Get the OBRA value from the first row to create the filename
+                const file = fileInput.files[0];
+                if (!file) {
+                    downloadFile(scriptContent, 'script.ahk');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                        let filename = 'script.ahk';
+                        if (jsonData.length > 0) {
+                            const obra = jsonData[0][Object.keys(jsonData[0])[0]]; // First value of first row
+                            if (obra) {
+                                // Sanitize the filename to be safe for all operating systems
+                                const sanitizedObra = String(obra).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                                filename = `${sanitizedObra}.ahk`;
+                            }
+                        }
+                        downloadFile(scriptContent, filename);
+                    } catch (error) {
+                        statusMessage.textContent = 'Error creating filename from Excel. Downloading as script.ahk.';
+                        console.error('Filename generation error: ', error);
+                        downloadFile(scriptContent, 'script.ahk');
+                    }
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            function downloadFile(content, filename) {
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                statusMessage.textContent = `Script downloaded as ${filename}.`;
+            }
+
+            // Generate button logic
+            generateBtn.addEventListener('click', () => {
+                ahkScriptOutput.value = '';
+                statusMessage.textContent = '';
+                dataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">Table will appear here after file is processed.</div>';
+
+                if (fileInput.files.length === 0) {
+                    statusMessage.textContent = 'Please select an Excel file first.';
+                    return;
+                }
+
+                const file = fileInput.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        
+                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+
+                        if (jsonData.length === 0) {
+                            statusMessage.textContent = 'The Excel file is empty or formatted incorrectly.';
+                            return;
+                        }
+
+                        // Generate and display the AHK script
+                        const ahkScript = generateAhkScript(jsonData);
+                        ahkScriptOutput.value = ahkScript;
+
+                        // Generate and display the data table
+                        displayDataTable(jsonData);
+
+                        statusMessage.textContent = 'Script y tabla generados correctamente!';
+                    } catch (error) {
+                        statusMessage.textContent = 'Error processing file. Please ensure it is a valid Excel file.';
+                        console.error('File processing error: ', error);
+                    }
+                };
+
+                reader.onerror = function(e) {
+                    statusMessage.textContent = 'Error reading the file.';
+                    console.error('File read error: ', e);
+                };
+
+                reader.readAsArrayBuffer(file);
+            });
+
+            /**
+             * Generates the AutoHotkey script from the JSON data.
+             * @param {Array} data The JSON array of rows from the Excel file.
+             * @returns {string} The generated AHK script.
+             */
+            function generateAhkScript(data) {
+                let script = '; Script para carga de manzanas.\n';
+                script += ';\n';
+                script += '; === CONFIGURACION ===\n';
+                script += 'ClickX := 1852\n';
+                script += 'ClickY := 531\n';
+                script += 'SleepTime := 5000\n';
+                script += 'SetKeyDelay, 50, 50\n';
+                script += 'SetWorkingDir, %A_ScriptDir%\n';
+                script += '\n';
+                script += '; Presiona ctrl y M para correr el script\n';
+                script += '; Presiona Esc para detenerlo en cualquier momento\n';
+                script += '\n';
+                script += '^m::\n';
+                script += '    Sleep, 1000\n';
+                script += '\n';
+
+                data.forEach((row, index) => {
+                    try {
+                        const keys = Object.keys(row);
+                        const clave = row[keys[1]];
+                        const interior = row[keys[2]];
+                        const prototipoclave = row[keys[3]];
+                        const parts = String(interior).split('-');
+                        const manzana = parts[0] || '';
+                        const lote = parts[1] || '';
+                        const interiorNum = parts[2] || '';
+
+                        script += `    ; --- Row ${index + 1} ---\n`;
+                        script += `    ; CLAVE: ${clave}\n`;
+                        script += `    ; MANZANA: ${manzana}, LOTE: ${lote}, INTERIORNUM: ${interiorNum}\n`;
+                        script += `    Sleep, 4000\n`;
+                        script += `    Click, %ClickX%, %ClickY%\n`;
+                        script += `    Sleep, 2000\n`;
+                        script += `    Click, 1313, 530\n`;
+                        script += `    Sleep, 4000\n`;
+                        script += `    Click, %ClickX%, %ClickY%\n`;
+                        script += `    Click, 1350, 252\n`;
+                        script += `    Send, ${clave}\n`;
+                        script += `    Send, {Tab}\n`;
+                        script += `    Send, ${manzana}\n`;
+                        script += `    Send, {Tab}\n`;
+                        script += `    Send, ${lote}\n`;
+                        script += `    Send, {Tab}\n`;
+                        script += `    Send, ${interiorNum}\n`;
+                        script += `    Send, {Tab}\n`;
+                        script += `    Send, 1\n`;
+                        script += `    Click, 1361, 460\n`;
+                        script += `    Sleep, 1000\n`;
+                        script += `    Send, ${prototipoclave}\n`;
+                        script += `    Sleep, 1000\n`;
+                        script += `    Click, 1416, 531\n`;
+                        script += `    Sleep, 1000\n`;
+                        script += `    Click, 1800, 196\n`;
+                        script += `    Sleep, %SleepTime%\n`;
+                        script += '\n';
+                    } catch (e) {
+                        script += `    ; --- Row ${index + 1} - ERROR: Could not process row due to incorrect format. ---\n`;
+                        script += '    ; ' + JSON.stringify(row) + '\n';
+                        script += '    ; Please ensure the columns are in the correct order (OBRA, CLAVE, INTERIOR, PROTOTIPOCLAVE) and the INTERIOR column is in the format "M2-27-1".\n';
+                        script += '\n';
+                    }
+                });
+
+                script += '    MsgBox, Process finished!\n';
+                script += 'return\n';
+                script += '\n';
+                script += 'Esc::\n';
+                script += '    ExitApp\n';
+                script += 'return\n';
+
+                return script;
+            }
+
+            /**
+             * Creates and displays an HTML table from the JSON data.
+             * @param {Array} data The JSON array of rows from the Excel file.
+             */
+            function displayDataTable(data) {
+                const table = document.createElement('table');
+                table.classList.add('w-full', 'table-auto');
+                
+                // Create table header
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                const headers = ['OBRA', 'CLAVE', 'INTERIOR', 'PROTOTIPOCLAVE', 'MANZANA', 'LOTE', 'INTERIORNUM'];
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
+
+                // Create table body
+                const tbody = document.createElement('tbody');
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    
+                    // The order of the keys is not guaranteed, so we'll use the headers to retrieve the values
+                    // And parse the INTERIOR column as before
+                    const keys = Object.keys(row);
+                    const obra = row[keys[0]] || '';
+                    const clave = row[keys[1]] || '';
+                    const interior = row[keys[2]] || '';
+                    const prototipoclave = row[keys[3]] || '';
+                    
+                    const parts = String(interior).split('-');
+                    const manzana = parts[0] || '';
+                    const lote = parts[1] || '';
+                    const interiorNum = parts[2] || '';
+                    
+                    const values = [obra, clave, interior, prototipoclave, manzana, lote, interiorNum];
+                    
+                    values.forEach(value => {
+                        const td = document.createElement('td');
+                        td.textContent = value;
+                        tr.appendChild(td);
+                    });
+
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+
+                // Clear the container and append the new table
+                dataTableContainer.innerHTML = '';
+                dataTableContainer.appendChild(table);
+            }
+        });
+    </script>
+</body>
+</html>
