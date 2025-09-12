@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AHK Script Generator</title>
+    <title>Excel Script Generators</title>
     <!-- Tailwind CSS for a clean, responsive design -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
@@ -13,21 +13,21 @@
             color: #1f2937;
         }
         /* Custom table styling for better visual separation and readability */
-        #dataTable table {
+        .data-table-container table {
             width: 100%;
             border-collapse: collapse;
             font-size: 0.875rem; /* text-sm */
         }
-        #dataTable th, #dataTable td {
+        .data-table-container th, .data-table-container td {
             padding: 0.75rem; /* p-3 */
             border: 1px solid #e5e7eb; /* border-gray-200 */
         }
-        #dataTable th {
+        .data-table-container th {
             background-color: #f9fafb; /* bg-gray-50 */
             text-align: left;
             font-weight: 600; /* font-semibold */
         }
-        #dataTable tbody tr:nth-child(odd) {
+        .data-table-container tbody tr:nth-child(odd) {
             background-color: #f9fafb;
         }
 
@@ -50,7 +50,7 @@
                     <a href="#" data-page="ahk-generator" class="sidebar-link active block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Script AHK</a>
                 </li>
                 <li>
-                    <a href="tarjeta.html" data-page="second-page" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Creación de Tarjetas</a>
+                    <a href="#" data-page="tarjetas-generator" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas AHK</a>
                 </li>
             </ul>
         </nav>
@@ -74,20 +74,20 @@
                         Paso 1: Carga tu archivo
                     </h2>
                     <div class="mb-4">
-                        <label for="excelFile" class="block text-gray-700 font-medium mb-2">
+                        <label for="ahkExcelFile" class="block text-gray-700 font-medium mb-2">
                             Selecciona tu Excel (.xlsx, .xls)
                         </label>
-                        <input type="file" id="excelFile" accept=".xlsx, .xls" class="w-full text-sm text-gray-500
+                        <input type="file" id="ahkExcelFile" accept=".xlsx, .xls" class="w-full text-sm text-gray-500
                             file:mr-4 file:py-2 file:px-4
                             file:rounded-full file:border-0
                             file:text-sm file:font-semibold
                             file:bg-blue-50 file:text-blue-700
                             hover:file:bg-blue-100 transition-colors duration-200" />
                     </div>
-                    <button id="generateBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-transform duration-200 transform hover:scale-105">
+                    <button id="ahkGenerateBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-transform duration-200 transform hover:scale-105">
                         Generar Script
                     </button>
-                    <div id="statusMessage" class="mt-4 text-center text-gray-600"></div>
+                    <div id="ahkStatusMessage" class="mt-4 text-center text-gray-600"></div>
                 </div>
 
                 <!-- Right side: Script Output -->
@@ -97,7 +97,7 @@
                     </h2>
                     <textarea id="ahkScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de AutoHotkey aparecerá aquí..."></textarea>
                     <div class="flex flex-col sm:flex-row gap-4 mt-4">
-                        <button id="downloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
+                        <button id="ahkDownloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
                             Descargar Script
                         </button>
                     </div>
@@ -109,7 +109,7 @@
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">
                     Tabla de datos
                 </h2>
-                <div id="dataTable" class="overflow-x-auto rounded-lg border border-gray-300">
+                <div id="ahkDataTable" class="overflow-x-auto rounded-lg border border-gray-300 data-table-container">
                     <!-- Table will be injected here by JavaScript -->
                     <div class="p-4 text-gray-500 text-center">
                         La tabla aparecerá cuando se carguen datos.
@@ -118,14 +118,63 @@
             </div>
         </div>
 
-        <!-- Placeholder for the Second Page -->
-        <div id="page-second-page" class="page-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
-            <h1 class="text-3xl font-bold mb-4 text-center text-gray-800">
-                Bienvenido a la Segunda Página
+        <!-- Tarjetas Script Generator Section -->
+        <div id="page-tarjetas-generator" class="page-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
+            <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
+                Generador de Tarjetas AHK
             </h1>
-            <p class="text-center text-gray-600">
-                Aquí estará el contenido de la segunda página. ¡Dime qué te gustaría agregar aquí!
+            <p class="text-center text-gray-600 mb-8">
+                Carga un archivo de Excel para generar un script de tarjetas.
             </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Left side: Controls -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        Paso 1: Carga tu archivo
+                    </h2>
+                    <div class="mb-4">
+                        <label for="tarjetasExcelFile" class="block text-gray-700 font-medium mb-2">
+                            Selecciona tu Excel (.xlsx, .xls)
+                        </label>
+                        <input type="file" id="tarjetasExcelFile" accept=".xlsx, .xls" class="w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100 transition-colors duration-200" />
+                    </div>
+                    <button id="tarjetasGenerateBtn" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-transform duration-200 transform hover:scale-105 mt-6">
+                        Generar Script
+                    </button>
+                    <div id="tarjetasStatusMessage" class="mt-4 text-center text-gray-600"></div>
+                </div>
+
+                <!-- Right side: Script Output -->
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        Paso 2: Descarga tu archivo
+                    </h2>
+                    <textarea id="tarjetasScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de tarjetas aparecerá aquí..."></textarea>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <button id="tarjetasDownloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
+                            Descargar Script
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Section for the data table -->
+            <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    Tabla de datos
+                </h2>
+                <div id="tarjetasDataTable" class="overflow-x-auto rounded-lg border border-gray-300 data-table-container">
+                    <!-- Table will be injected here by JavaScript -->
+                    <div class="p-4 text-gray-500 text-center">
+                        La tabla aparecerá cuando se carguen datos.
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -164,57 +213,19 @@
             // Initial state: show the AHK generator page
             showPage('ahk-generator');
 
-
-            // --- Existing AHK Script Generator Logic ---
-            const fileInput = document.getElementById('excelFile');
-            const generateBtn = document.getElementById('generateBtn');
-            const ahkScriptOutput = document.getElementById('ahkScriptOutput');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const statusMessage = document.getElementById('statusMessage');
-            const dataTableContainer = document.getElementById('dataTable');
-
-            // Download button logic
-            downloadBtn.addEventListener('click', () => {
-                const scriptContent = ahkScriptOutput.value;
-                if (!scriptContent) {
-                    statusMessage.textContent = 'No script to download. Please generate it first.';
-                    return;
-                }
-
-                // Get the OBRA value from the first row to create the filename
-                const file = fileInput.files[0];
-                if (!file) {
-                    downloadFile(scriptContent, 'script.ahk');
-                    return;
-                }
-
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const firstSheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[firstSheetName];
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
-
-                        let filename = 'script.ahk';
-                        if (jsonData.length > 0) {
-                            const obra = jsonData[0][Object.keys(jsonData[0])[0]]; // First value of first row
-                            if (obra) {
-                                // Sanitize the filename to be safe for all operating systems
-                                const sanitizedObra = String(obra).replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                                filename = `${sanitizedObra}.ahk`;
-                            }
-                        }
-                        downloadFile(scriptContent, filename);
-                    } catch (error) {
-                        statusMessage.textContent = 'Error creating filename from Excel. Downloading as script.ahk.';
-                        console.error('Filename generation error: ', error);
-                        downloadFile(scriptContent, 'script.ahk');
+            // --- Shared Helper Functions ---
+            // Function to find a column header case-insensitively from a list of possibilities
+            function findColumnHeader(row, possibleNames) {
+                const headers = Object.keys(row);
+                const lowerHeaders = headers.map(h => String(h).toLowerCase().trim());
+                for (const name of possibleNames) {
+                    const index = lowerHeaders.indexOf(String(name).toLowerCase().trim());
+                    if (index !== -1) {
+                        return headers[index];
                     }
-                };
-                reader.readAsArrayBuffer(file);
-            });
+                }
+                return null;
+            }
 
             function downloadFile(content, filename) {
                 const blob = new Blob([content], { type: 'text/plain' });
@@ -226,64 +237,106 @@
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                statusMessage.textContent = `Script downloaded as ${filename}.`;
             }
 
-            // Generate button logic
-            generateBtn.addEventListener('click', () => {
-                ahkScriptOutput.value = '';
-                statusMessage.textContent = '';
-                dataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">La tabla aparecerá cuando se carguen datos.</div>';
+            function displayDataTable(data, container, headers) {
+                const table = document.createElement('table');
+                table.classList.add('w-full', 'table-auto');
+                
+                const thead = document.createElement('thead');
+                const headerRow = document.createElement('tr');
+                headers.forEach(headerText => {
+                    const th = document.createElement('th');
+                    th.textContent = headerText;
+                    headerRow.appendChild(th);
+                });
+                thead.appendChild(headerRow);
+                table.appendChild(thead);
 
-                if (fileInput.files.length === 0) {
-                    statusMessage.textContent = 'Por favor, selecciona primero un archivo de Excel.';
+                const tbody = document.createElement('tbody');
+                data.forEach(row => {
+                    const tr = document.createElement('tr');
+                    headers.forEach(header => {
+                        const td = document.createElement('td');
+                        td.textContent = row[header] || '';
+                        tr.appendChild(td);
+                    });
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+
+                container.innerHTML = '';
+                container.appendChild(table);
+            }
+
+            // --- AHK Script Generator Logic ---
+            const ahkFileInput = document.getElementById('ahkExcelFile');
+            const ahkGenerateBtn = document.getElementById('ahkGenerateBtn');
+            const ahkScriptOutput = document.getElementById('ahkScriptOutput');
+            const ahkDownloadBtn = document.getElementById('ahkDownloadBtn');
+            const ahkStatusMessage = document.getElementById('ahkStatusMessage');
+            const ahkDataTableContainer = document.getElementById('ahkDataTable');
+            let loadedAhkData = [];
+
+            ahkFileInput.addEventListener('change', (e) => {
+                ahkScriptOutput.value = '';
+                ahkDataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">La tabla aparecerá cuando se carguen datos.</div>';
+                
+                if (e.target.files.length === 0) {
+                    ahkStatusMessage.textContent = 'Por favor, selecciona un archivo de Excel.';
                     return;
                 }
-
-                const file = fileInput.files[0];
+                ahkStatusMessage.textContent = 'Cargando archivo...';
+                const file = e.target.files[0];
                 const reader = new FileReader();
-
                 reader.onload = function(e) {
                     try {
                         const data = new Uint8Array(e.target.result);
                         const workbook = XLSX.read(data, { type: 'array' });
                         const firstSheetName = workbook.SheetNames[0];
                         const worksheet = workbook.Sheets[firstSheetName];
-                        
-                        const jsonData = XLSX.utils.sheet_to_json(worksheet);
+                        loadedAhkData = XLSX.utils.sheet_to_json(worksheet);
 
-                        if (jsonData.length === 0) {
-                            statusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
+                        if (loadedAhkData.length === 0) {
+                            ahkStatusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
                             return;
                         }
 
-                        // Generate and display the AHK script
-                        const ahkScript = generateAhkScript(jsonData);
-                        ahkScriptOutput.value = ahkScript;
-
-                        // Generate and display the data table
-                        displayDataTable(jsonData);
-
-                        statusMessage.textContent = '¡Script y tabla generados correctamente!';
+                        // Dynamically get headers from the first row of data
+                        const headers = Object.keys(loadedAhkData[0] || {});
+                        displayDataTable(loadedAhkData, ahkDataTableContainer, headers);
+                        ahkStatusMessage.textContent = 'Archivo cargado. Haz clic en "Generar Script" para continuar.';
                     } catch (error) {
-                        statusMessage.textContent = 'Error procesando el archivo. Asegúrate de que sea un archivo de Excel válido.';
+                        ahkStatusMessage.textContent = 'Error procesando el archivo. Asegúrate de que sea un archivo de Excel válido.';
                         console.error('File processing error: ', error);
                     }
                 };
-
                 reader.onerror = function(e) {
-                    statusMessage.textContent = 'Error al leer el archivo.';
+                    ahkStatusMessage.textContent = 'Error al leer el archivo.';
                     console.error('File read error: ', e);
                 };
-
                 reader.readAsArrayBuffer(file);
             });
 
-            /**
-             * Generates the AutoHotkey script from the JSON data.
-             * @param {Array} data The JSON array of rows from the Excel file.
-             * @returns {string} The generated AHK script.
-             */
+            ahkDownloadBtn.addEventListener('click', () => {
+                const scriptContent = ahkScriptOutput.value;
+                if (!scriptContent) {
+                    ahkStatusMessage.textContent = 'No hay script para descargar. Por favor, genéralo primero.';
+                    return;
+                }
+                downloadFile(scriptContent, 'script.ahk');
+            });
+
+            ahkGenerateBtn.addEventListener('click', () => {
+                if (loadedAhkData.length === 0) {
+                    ahkStatusMessage.textContent = 'Por favor, carga un archivo de Excel primero.';
+                    return;
+                }
+                const ahkScript = generateAhkScript(loadedAhkData);
+                ahkScriptOutput.value = ahkScript;
+                ahkStatusMessage.textContent = '¡Script y tabla generados correctamente!';
+            });
+            
             function generateAhkScript(data) {
                 let script = '; Script para carga de manzanas.\n';
                 script += ';\n';
@@ -298,120 +351,280 @@
                 script += '; Presiona Esc para detenerlo en cualquier momento\n';
                 script += '\n';
                 script += '^m::\n';
-                script += '    Sleep, 1000\n';
+                script += '     Sleep, 1000\n';
                 script += '\n';
+
+                const firstRow = data[0] || {};
+                const claveHeader = findColumnHeader(firstRow, ['CLAVE', 'CLAVE_CATASTRAL']);
+                const interiorHeader = findColumnHeader(firstRow, ['INTERIOR', 'INTERIOR_ID']);
+                const prototipoHeader = findColumnHeader(firstRow, ['PROTOTIPOCLAVE', 'PROTOTIPO']);
+
+                if (!claveHeader || !interiorHeader || !prototipoHeader) {
+                    return '; ERROR: El archivo cargado no es para el generador AHK. No se encontraron las columnas necesarias (CLAVE, INTERIOR, PROTOTIPOCLAVE).';
+                }
 
                 data.forEach((row, index) => {
                     try {
-                        const keys = Object.keys(row);
-                        const clave = row[keys[1]];
-                        const interior = row[keys[2]];
-                        const prototipoclave = row[keys[3]];
+                        const clave = row[claveHeader] || '';
+                        const interior = row[interiorHeader] || '';
+                        const prototipoclave = row[prototipoHeader] || '';
                         const parts = String(interior).split('-');
                         const manzana = parts[0] || '';
                         const lote = parts[1] || '';
                         const interiorNum = parts[2] || '';
 
-                        script += `    ; --- Fila ${index + 1} ---\n`;
-                        script += `    ; CLAVE: ${clave}\n`;
-                        script += `    ; MANZANA: ${manzana}, LOTE: ${lote}, INTERIORNUM: ${interiorNum}\n`;
-                        script += `    Sleep, 4000\n`;
-                        script += `    Click, %ClickX%, %ClickY%\n`;
-                        script += `    Sleep, 2000\n`;
-                        script += `    Click, 1886, 139\n`;
-                        script += `    Sleep, 4000\n`;
-                        script += `    Click, %ClickX%, %ClickY%\n`;
-                        script += `    Sleep, 2000\n`;
-                        script += `    Click, 1350, 252\n`;
-                        script += `    Send, ${clave}\n`;
-                        script += `    Send, {Tab}\n`;
-                        script += `    Send, ${manzana}\n`;
-                        script += `    Send, {Tab}\n`;
-                        script += `    Send, ${lote}\n`;
-                        script += `    Send, {Tab}\n`;
-                        script += `    Send, ${interiorNum}\n`;
-                        script += `    Send, {Tab}\n`;
-                        script += `    Send, 1\n`;
-                        script += `    Click, 1361, 460\n`;
-                        script += `    Sleep, 1000\n`;
-                        script += `    Send, ${prototipoclave}\n`;
-                        script += `    Sleep, 1000\n`;
-                        script += `    Click, 1416, 531\n`;
-                        script += `    Sleep, 1000\n`;
-                        script += `    Click, 1800, 196\n`;
-                        script += `    Sleep, 10000\n`;
+                        script += `     ; --- Fila ${index + 1} ---\n`;
+                        script += `     ; CLAVE: ${clave}\n`;
+                        script += `     ; MANZANA: ${manzana}, LOTE: ${lote}, INTERIORNUM: ${interiorNum}\n`;
+                        script += `     Sleep, 4000\n`;
+                        script += `     Click, 1852, 531\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1886, 139\n`;
+                        script += `     Sleep, 4000\n`;
+                        script += `     Click, 1852, 531\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1350, 252\n`;
+                        script += `     Send, ${clave}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${manzana}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${lote}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${interiorNum}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, 1\n`;
+                        script += `     Click, 1361, 460\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, ${prototipoclave}\n`;
+                        script += `     Sleep, 10000\n`;
                         script += '\n';
                     } catch (e) {
-                        script += `    ; --- Fila ${index + 1} - ERROR: No se pudo procesar la fila debido a un formato incorrecto. ---\n`;
-                        script += '    ; ' + JSON.stringify(row) + '\n';
-                        script += '    ; Por favor, asegúrate de que las columnas estén en el orden correcto (OBRA, CLAVE, INTERIOR, PROTOTIPOCLAVE) y que la columna INTERIOR tenga el formato "M2-27-1".\n';
+                        script += `     ; --- Fila ${index + 1} - ERROR: No se pudo procesar la fila debido a un formato incorrecto. ---\n`;
+                        script += '     ; ' + JSON.stringify(row) + '\n';
+                        script += '     ; Por favor, asegúrate de que las columnas estén en el orden correcto (OBRA, CLAVE, INTERIOR, PROTOTIPOCLAVE) y que la columna INTERIOR tenga el formato "M2-27-1".\n';
                         script += '\n';
                     }
                 });
-
-                script += '    MsgBox, Proceso finalizado!\n';
+                script += '     MsgBox, Proceso finalizado!\n';
                 script += 'return\n';
                 script += '\n';
                 script += 'Esc::\n';
-                script += '    ExitApp\n';
+                script += '     ExitApp\n';
                 script += 'return\n';
-
                 return script;
             }
 
-            /**
-             * Creates and displays an HTML table from the JSON data.
-             * @param {Array} data The JSON array of rows from the Excel file.
-             */
-            function displayDataTable(data) {
-                const table = document.createElement('table');
-                table.classList.add('w-full', 'table-auto');
+            // --- Tarjetas Script Generator Logic ---
+            const tarjetasFileInput = document.getElementById('tarjetasExcelFile');
+            const tarjetasGenerateBtn = document.getElementById('tarjetasGenerateBtn');
+            const tarjetasScriptOutput = document.getElementById('tarjetasScriptOutput');
+            const tarjetasDownloadBtn = document.getElementById('tarjetasDownloadBtn');
+            const tarjetasStatusMessage = document.getElementById('tarjetasStatusMessage');
+            const tarjetasDataTableContainer = document.getElementById('tarjetasDataTable');
+            
+            let loadedTarjetasData = []; // Store the parsed data
+
+            tarjetasFileInput.addEventListener('change', (e) => {
+                tarjetasScriptOutput.value = '';
+                tarjetasDataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">La tabla aparecerá cuando se carguen datos.</div>';
                 
-                // Create table header
-                const thead = document.createElement('thead');
-                const headerRow = document.createElement('tr');
-                const headers = ['OBRA', 'CLAVE', 'INTERIOR', 'PROTOTIPOCLAVE', 'MANZANA', 'LOTE', 'INTERIORNUM'];
-                headers.forEach(headerText => {
-                    const th = document.createElement('th');
-                    th.textContent = headerText;
-                    headerRow.appendChild(th);
+                if (e.target.files.length === 0) {
+                    tarjetasStatusMessage.textContent = 'Por favor, selecciona un archivo de Excel.';
+                    return;
+                }
+                tarjetasStatusMessage.textContent = 'Cargando archivo...';
+                const file = e.target.files[0];
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const data = new Uint8Array(e.target.result);
+                        const workbook = XLSX.read(data, { type: 'array' });
+                        const firstSheetName = workbook.SheetNames[0];
+                        const worksheet = workbook.Sheets[firstSheetName];
+                        loadedTarjetasData = XLSX.utils.sheet_to_json(worksheet);
+
+                        if (loadedTarjetasData.length === 0) {
+                            tarjetasStatusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
+                            return;
+                        }
+                        
+                        const headers = Object.keys(loadedTarjetasData[0] || {});
+                        displayDataTable(loadedTarjetasData, tarjetasDataTableContainer, headers);
+                        tarjetasStatusMessage.textContent = 'Archivo cargado. Haz clic en "Generar Script" para continuar.';
+                    } catch (error) {
+                        tarjetasStatusMessage.textContent = 'Error procesando el archivo. Asegúrate de que sea un archivo de Excel válido.';
+                        console.error('File processing error: ', error);
+                    }
+                };
+                reader.onerror = function(e) {
+                    tarjetasStatusMessage.textContent = 'Error al leer el archivo.';
+                    console.error('File read error: ', e);
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            tarjetasGenerateBtn.addEventListener('click', () => {
+                if (loadedTarjetasData.length === 0) {
+                    tarjetasStatusMessage.textContent = 'Por favor, carga un archivo de Excel primero.';
+                    return;
+                }
+
+                const tarjetasScript = generateTarjetasScript(loadedTarjetasData);
+                tarjetasScriptOutput.value = tarjetasScript;
+                tarjetasStatusMessage.textContent = '¡Script generado correctamente! Descarga tu archivo.';
+            });
+
+            tarjetasDownloadBtn.addEventListener('click', () => {
+                const scriptContent = tarjetasScriptOutput.value;
+                if (!scriptContent) {
+                    tarjetasStatusMessage.textContent = 'No hay script para descargar. Por favor, genéralo primero.';
+                    return;
+                }
+
+                let filename = 'tarjeta_script.ahk';
+                if (loadedTarjetasData.length > 0) {
+                    const obraHeader = findColumnHeader(loadedTarjetasData[0], ['OBRA']);
+                    if (obraHeader) {
+                        const obraValue = loadedTarjetasData[0][obraHeader];
+                        if (obraValue) {
+                           const sanitizedValue = String(obraValue).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                           filename = `tarjeta_${sanitizedValue}.ahk`;
+                        }
+                    }
+                }
+                downloadFile(scriptContent, filename);
+            });
+            
+            function generateTarjetasScript(data) {
+                let script = '; Script para carga de tarjetas.\n';
+                script += ';\n';
+                script += '; === CONFIGURACION ===\n';
+                script += 'SleepTime := 500\n';
+                script += 'SetKeyDelay, 50, 50\n';
+                script += 'SetWorkingDir, %A_ScriptDir%\n';
+                script += 'ClickX := 0 ; Establece las coordenadas X de tu primer campo de entrada\n';
+                script += 'ClickY := 0 ; Establece las coordenadas Y de tu primer campo de entrada\n';
+                script += '\n';
+                script += '; Presiona ctrl y T para correr el script\n';
+                script += '; Presiona Esc para detenerlo en cualquier momento\n';
+                script += '\n';
+                script += '^t::\n';
+                script += '     Sleep, 1000\n';
+                script += '\n';
+
+                const firstRow = data[0] || {};
+                const tarjetaHeader = findColumnHeader(firstRow, ['TARJETA']);
+                const nombreHeader = findColumnHeader(firstRow, ['NOMBRE']);
+                const cantidadHeader = findColumnHeader(firstRow, ['CANTIDAD']);
+                const unidadHeader = findColumnHeader(firstRow, ['UNIDAD']);
+                const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
+                const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
+
+                if (!tarjetaHeader || !nombreHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
+                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
+                }
+
+                data.forEach((row, index) => {
+                    try {
+                        const tarjeta = row[tarjetaHeader] || '';
+                        const nombre = row[nombreHeader] || '';
+                        const cantidad = row[cantidadHeader] || '';
+                        const unidad = row[unidadHeader] || '';
+                        const precioMoneda = row[precioMonedaHeader] || '';
+                        const contratacion = row[contratacionHeader] || '';
+
+                        script += `     ; --- Fila ${index + 1} ---\n`;
+                        script += `     ; TARJETA: ${tarjeta}, NOMBRE: ${nombre}, CANTIDAD: ${cantidad}, UNIDAD: ${unidad}, PRECIO MONEDA: ${precioMoneda}, CONTRATACION: ${contratacion}\n`;
+                        
+                        script += `     Click, 1585, 500\n`;
+                        script += `     Click, 1336, 210\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, Normal\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, ${String(unidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Click, 1838, 154\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Sleep, 5000\n`;
+
+                        script += `     Click, 1824, 204\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1737, 725\n`;
+                        script += `     Click, 350, 275\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1628, 275\n`;
+                        script += `     Send, 4\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Click, 700, 280\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Click, 1736, 220\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 148, 470\n`;
+                        script += `     Click, 1355, 462\n`;
+                        script += `     Send, ${String(cantidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${String(precioMoneda).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Click, 1816, 342\n`;
+                        script += `     Sleep, 3000\n`;
+                        script += `     Click, 1866, 206\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1924, 1010\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1924, 1010\n`;
+                        script += `     Click, 210, 761\n`;
+                        script += `     Send, ${String(contratacion).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 680, 750\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1926, 1016\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1200, 755\n`;
+                        script += `     Send, 1\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1795, 755\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1325, 288\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Click, 1830, 231\n`;
+                        script += `     Click, 1352, 411\n`;
+                        script += `     Click, 1888, 138\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1926, 1015\n`;
+                        script += `     Send, 1\n`;
+                        script += `     Click, 1924, 133\n`;
+                        script += `     Click, 1924, 133\n`;
+                        script += `     Click, 1825, 210\n`;
+                        script += `     Sleep, 3000\n`;
+                        script += `     Click, 500, 271\n`;
+                        script += `     Sleep, 5000\n`;
+                        script += '\n';
+                    } catch (e) {
+                        script += `     ; --- Fila ${index + 1} - ERROR: No se pudo procesar la fila debido a un formato incorrecto. ---\n`;
+                        script += '     ; ' + JSON.stringify(row) + '\n';
+                        script += `     ; Por favor, asegúrate de que las columnas TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, y CONTRATACION existan en tu archivo de Excel.\n`;
+                        script += '\n';
+                    }
                 });
-                thead.appendChild(headerRow);
-                table.appendChild(thead);
-
-                // Create table body
-                const tbody = document.createElement('tbody');
-                data.forEach(row => {
-                    const tr = document.createElement('tr');
-                    
-                    // The order of the keys is not guaranteed, so we'll use the headers to retrieve the values
-                    // And parse the INTERIOR column as before
-                    const keys = Object.keys(row);
-                    const obra = row[keys[0]] || '';
-                    const clave = row[keys[1]] || '';
-                    const interior = row[keys[2]] || '';
-                    const prototipoclave = row[keys[3]] || '';
-                    
-                    const parts = String(interior).split('-');
-                    const manzana = parts[0] || '';
-                    const lote = parts[1] || '';
-                    const interiorNum = parts[2] || '';
-                    
-                    const values = [obra, clave, interior, prototipoclave, manzana, lote, interiorNum];
-                    
-                    values.forEach(value => {
-                        const td = document.createElement('td');
-                        td.textContent = value;
-                        tr.appendChild(td);
-                    });
-
-                    tbody.appendChild(tr);
-                });
-                table.appendChild(tbody);
-
-                // Clear the container and append the new table
-                dataTableContainer.innerHTML = '';
-                dataTableContainer.appendChild(table);
+                script += '     MsgBox, Proceso de tarjetas finalizado!\n';
+                script += 'return\n';
+                script += '\n';
+                script += 'Esc::\n';
+                script += '     ExitApp\n';
+                script += 'return\n';
+                return script;
             }
         });
     </script>
