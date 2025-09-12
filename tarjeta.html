@@ -516,9 +516,12 @@
                 const tarjetaHeader = findColumnHeader(firstRow, ['TARJETA']);
                 const nombreHeader = findColumnHeader(firstRow, ['NOMBRE']);
                 const cantidadHeader = findColumnHeader(firstRow, ['CANTIDAD']);
+                const unidadHeader = findColumnHeader(firstRow, ['UNIDAD']);
+                const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
+                const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
 
-                if (!tarjetaHeader || !nombreHeader || !cantidadHeader) {
-                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD).';
+                if (!tarjetaHeader || !nombreHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
+                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
                 }
 
                 data.forEach((row, index) => {
@@ -526,17 +529,18 @@
                         const tarjeta = row[tarjetaHeader] || '';
                         const nombre = row[nombreHeader] || '';
                         const cantidad = row[cantidadHeader] || '';
-                        
-                        const sanitizedTarjeta = String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}');
-                        const sanitizedNombre = String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}');
-                        const sanitizedCantidad = String(cantidad).replace(/%/g, '%%').replace(/ /g, '{Space}');
-                        
+                        const unidad = row[unidadHeader] || '';
+                        const precioMoneda = row[precioMonedaHeader] || '';
+                        const contratacion = row[contratacionHeader] || '';
+
                         script += `     ; --- Fila ${index + 1} ---\n`;
+                        script += `     ; TARJETA: ${tarjeta}, NOMBRE: ${nombre}, CANTIDAD: ${cantidad}, UNIDAD: ${unidad}, PRECIO MONEDA: ${precioMoneda}, CONTRATACION: ${contratacion}\n`;
+                        
                         script += `     Click, 1585, 500\n`;
                         script += `     Click, 1336, 210\n`;
-                        script += `     Send, ${tarjeta}\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
-                        script += `     Send, ${nombre}\n`;
+                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Send, Normal\n`;
@@ -545,11 +549,11 @@
                         script += `     Send, {Tab}\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
-                        script += `     Send, ${unidad}\n`;
+                        script += `     Send, ${String(unidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Send, {Tab}\n`;
-                        script += `     Send, ${nombre}\n`;
+                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1838, 154\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Sleep, 5000\n`;
@@ -563,15 +567,15 @@
                         script += `     Send, 4\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Click, 700, 280\n`;
-                        script += `     Send, ${tarjeta}\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
                         script += `     Click, 1736, 220\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 148, 470\n`;
                         script += `     Click, 1355, 462\n`;
-                        script += `     Send, ${cantidad}\n`;
+                        script += `     Send, ${String(cantidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
-                        script += `     Send, ${preciomoneda}\n`;
+                        script += `     Send, ${String(precioMoneda).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1816, 342\n`;
                         script += `     Sleep, 3000\n`;
                         script += `     Click, 1866, 206\n`;
@@ -580,7 +584,7 @@
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1924, 1010\n`;
                         script += `     Click, 210, 761\n`;
-                        script += `     Send, ${contratacion}\n`;
+                        script += `     Send, ${String(contratacion).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 680, 750\n`;
@@ -593,7 +597,7 @@
                         script += `     Click, 1795, 755\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1325, 288\n`;
-                        script += `     Send, ${tarjeta}\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1830, 231\n`;
                         script += `     Click, 1352, 411\n`;
                         script += `     Click, 1888, 138\n`;
@@ -605,11 +609,12 @@
                         script += `     Click, 1825, 210\n`;
                         script += `     Sleep, 3000\n`;
                         script += `     Click, 500, 271\n`;
+                        script += `     Sleep, 5000\n`;
                         script += '\n';
                     } catch (e) {
                         script += `     ; --- Fila ${index + 1} - ERROR: No se pudo procesar la fila debido a un formato incorrecto. ---\n`;
                         script += '     ; ' + JSON.stringify(row) + '\n';
-                        script += '     ; Por favor, asegúrate de que las columnas TARJETA, NOMBRE, y CANTIDAD existan en tu archivo de Excel.\n';
+                        script += `     ; Por favor, asegúrate de que las columnas TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, y CONTRATACION existan en tu archivo de Excel.\n`;
                         script += '\n';
                     }
                 });
