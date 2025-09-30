@@ -543,21 +543,25 @@
                         
                         script += `     Click, 1800, 500\n`;
                         script += `     Click, 1336, 210\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1336, 210\n`;
                         script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
                         script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Sleep, 1000\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Send, Normal\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Send, {Enter}\n`;
-                        script += `     Send, {Tab}\n`;
-                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1670, 318\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Send, ${String(unidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
-                        script += `     Send, {Tab}\n`;
+                        script += `     Click, 1360, 380\n`;
                         script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1838, 154\n`;
                         script += `     Sleep, 6000\n`;
@@ -615,7 +619,7 @@
                         script += `     Click, 1924, 133\n`;
                         script += `     Click, 1924, 133\n`;
                         script += `     Click, 1825, 210\n`;
-                        script += `     Sleep, 3000\n`;
+                        script += `     Sleep, 5000\n`;
                         script += `     Click, 500, 271\n`;
                         script += `     Sleep, 5000\n`;
                         script += '\n';
