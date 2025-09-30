@@ -541,7 +541,7 @@
                         script += `     ; --- Fila ${index + 1} ---\n`;
                         script += `     ; TARJETA: ${tarjeta}, NOMBRE: ${nombre}, CANTIDAD: ${cantidad}, UNIDAD: ${unidad}, PRECIO MONEDA: ${precioMoneda}, CONTRATACION: ${contratacion}\n`;
                         
-                        script += `     Click, 1585, 500\n`;
+                        script += `     Click, 1800, 500\n`;
                         script += `     Click, 1336, 210\n`;
                         script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
@@ -560,9 +560,8 @@
                         script += `     Send, {Tab}\n`;
                         script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1838, 154\n`;
-                        script += `     Sleep, 1000\n`;
-                        script += `     Sleep, 5000\n`;
-
+                        script += `     Sleep, 6000\n`;
+                        script += `     ; --- Fin de primera parte ---\n`;
                         script += `     Click, 1824, 204\n`;
                         script += `     Sleep, 2000\n`;
                         script += `     Click, 1737, 725\n`;
@@ -576,7 +575,7 @@
                         script += `     Send, {Tab}\n`;
                         script += `     Click, 1736, 220\n`;
                         script += `     Sleep, 1000\n`;
-                        script += `     Click, 148, 470\n`;
+                        script += `     Click, 130, 470\n`;
                         script += `     Click, 1355, 462\n`;
                         script += `     Send, ${String(cantidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Send, {Tab}\n`;
@@ -585,6 +584,7 @@
                         script += `     Sleep, 3000\n`;
                         script += `     Click, 1866, 206\n`;
                         script += `     Sleep, 2000\n`;
+                        script += `     ; --- Fin de segunda parte ---\n`;
                         script += `     Click, 1924, 1010\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1924, 1010\n`;
@@ -596,18 +596,21 @@
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1926, 1016\n`;
                         script += `     Sleep, 1000\n`;
-                        script += `     Click, 1200, 755\n`;
+                        script += `     Click, 1600, 755\n`;
                         script += `     Send, 1\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1795, 755\n`;
                         script += `     Sleep, 1000\n`;
+                        script += `     ; --- Fin de tercera parte ---\n`;
                         script += `     Click, 1325, 288\n`;
                         script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Click, 1830, 231\n`;
                         script += `     Click, 1352, 411\n`;
                         script += `     Click, 1888, 138\n`;
                         script += `     Sleep, 1000\n`;
+                        script += `     ; --- Fin de cuarta parte ---\n`;
                         script += `     Click, 1926, 1015\n`;
+                        script += `     Click, 1600, 782\n`;
                         script += `     Send, 1\n`;
                         script += `     Click, 1924, 133\n`;
                         script += `     Click, 1924, 133\n`;
