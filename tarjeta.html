@@ -425,6 +425,7 @@
             const tarjetasDownloadBtn = document.getElementById('tarjetasDownloadBtn');
             const tarjetasStatusMessage = document.getElementById('tarjetasStatusMessage');
             const tarjetasDataTableContainer = document.getElementById('tarjetasDataTable');
+
             
             let loadedTarjetasData = []; // Store the parsed data
 
@@ -509,22 +510,23 @@
                 script += 'ClickX := 0 ; Establece las coordenadas X de tu primer campo de entrada\n';
                 script += 'ClickY := 0 ; Establece las coordenadas Y de tu primer campo de entrada\n';
                 script += '\n';
-                script += '; Presiona ctrl y T para correr el script\n';
+                script += '; Presiona ctrl y B para correr el script\n';
                 script += '; Presiona Esc para detenerlo en cualquier momento\n';
                 script += '\n';
-                script += '^t::\n';
+                script += '^b::\n';
                 script += '     Sleep, 1000\n';
                 script += '\n';
 
                 const firstRow = data[0] || {};
                 const tarjetaHeader = findColumnHeader(firstRow, ['TARJETA']);
                 const nombreHeader = findColumnHeader(firstRow, ['NOMBRE']);
+                const descripcionHeader = findColumnHeader(firstRow, ['DESCRIPCION', 'DESCRIPCIÓN', 'DESCRIPCION_LARGA']);
                 const cantidadHeader = findColumnHeader(firstRow, ['CANTIDAD']);
                 const unidadHeader = findColumnHeader(firstRow, ['UNIDAD']);
                 const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
                 const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
 
-                if (!tarjetaHeader || !nombreHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
+                if (!tarjetaHeader || !nombreHeader || !descripcionHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
                     return '; ERROR: El archivo cargado no es para el generador de Tarjetas. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
                 }
 
@@ -532,6 +534,7 @@
                     try {
                         const tarjeta = row[tarjetaHeader] || '';
                         const nombre = row[nombreHeader] || '';
+                        const descripcion = row[descripcionHeader] || '';
                         const cantidad = row[cantidadHeader] || '';
                         const unidad = row[unidadHeader] || '';
                         const precioMoneda = row[precioMonedaHeader] || '';
@@ -562,7 +565,7 @@
                         script += `     Send, {Enter}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1360, 380\n`;
-                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, ${String(descripcion).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
                         script += `     Sleep, 1000\n`;
                         script += `     Click, 1838, 154\n`;
                         script += `     Sleep, 6000\n`;
