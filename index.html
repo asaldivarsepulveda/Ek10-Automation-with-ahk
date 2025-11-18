@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Excel Script Generators</title>
-    <!-- Tailwind CSS for a clean, responsive design -->
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
@@ -19,13 +18,17 @@
             font-size: 0.875rem; /* text-sm */
         }
         .data-table-container th, .data-table-container td {
-            padding: 0.75rem; /* p-3 */
-            border: 1px solid #e5e7eb; /* border-gray-200 */
+            padding: 0.75rem;
+            /* p-3 */
+            border: 1px solid #e5e7eb;
+            /* border-gray-200 */
         }
         .data-table-container th {
-            background-color: #f9fafb; /* bg-gray-50 */
+            background-color: #f9fafb;
+            /* bg-gray-50 */
             text-align: left;
-            font-weight: 600; /* font-semibold */
+            font-weight: 600;
+            /* font-semibold */
         }
         .data-table-container tbody tr:nth-child(odd) {
             background-color: #f9fafb;
@@ -37,11 +40,9 @@
             font-weight: 600;
         }
     </style>
-    <!-- xlsx.js library to read Excel files -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body class="flex flex-col md:flex-row min-h-screen">
-    <!-- Sidebar -->
     <aside class="w-full md:w-64 bg-gray-100 p-4 border-r border-gray-300">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Menú</h2>
         <nav>
@@ -53,17 +54,13 @@
                     <a href="#" data-page="tarjetas-generator" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas AHK</a>
                 </li>
                 <li>
-                    <a href="tarjetas2.html" data-page="tarjetas2" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">
-                    Generador de Tarjetas 2
-                    </a>
+                    <a href="#" data-page="tarjetas-generator-copy" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas 2 (Copia)</a>
                 </li>
             </ul>
         </nav>
     </aside>
 
-    <!-- Main Content Area -->
     <main class="flex-1 p-4 sm:p-8 md:p-12">
-        <!-- AHK Script Generator Section -->
         <div id="page-ahk-generator" class="page-content bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
             <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
                 Generador de Script AHK
@@ -73,7 +70,6 @@
             </p>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Left side: Controls -->
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">
                         Paso 1: Carga tu archivo
@@ -95,12 +91,12 @@
                     <div id="ahkStatusMessage" class="mt-4 text-center text-gray-600"></div>
                 </div>
 
-                <!-- Right side: Script Output -->
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">
                         Paso 2: Descarga tu archivo
                     </h2>
-                    <textarea id="ahkScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de AutoHotkey aparecerá aquí..."></textarea>
+                    <textarea id="ahkScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 
+                        focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de AutoHotkey aparecerá aquí..."></textarea>
                     <div class="flex flex-col sm:flex-row gap-4 mt-4">
                         <button id="ahkDownloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
                             Descargar Script
@@ -109,13 +105,11 @@
                 </div>
             </div>
 
-            <!-- Section for the data table -->
             <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">
                     Tabla de datos
                 </h2>
                 <div id="ahkDataTable" class="overflow-x-auto rounded-lg border border-gray-300 data-table-container">
-                    <!-- Table will be injected here by JavaScript -->
                     <div class="p-4 text-gray-500 text-center">
                         La tabla aparecerá cuando se carguen datos.
                     </div>
@@ -123,7 +117,6 @@
             </div>
         </div>
 
-        <!-- Tarjetas Script Generator Section -->
         <div id="page-tarjetas-generator" class="page-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
             <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
                 Generador de Tarjetas AHK
@@ -132,7 +125,6 @@
                 Carga un archivo de Excel para generar un script de tarjetas.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Left side: Controls -->
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">
                         Paso 1: Carga tu archivo
@@ -154,12 +146,12 @@
                     <div id="tarjetasStatusMessage" class="mt-4 text-center text-gray-600"></div>
                 </div>
 
-                <!-- Right side: Script Output -->
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">
                         Paso 2: Descarga tu archivo
                     </h2>
-                    <textarea id="tarjetasScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de tarjetas aparecerá aquí..."></textarea>
+                    <textarea id="tarjetasScriptOutput" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none 
+                        focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de tarjetas aparecerá aquí..."></textarea>
                     <div class="flex flex-col sm:flex-row gap-4 mt-4">
                         <button id="tarjetasDownloadBtn" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
                             Descargar Script
@@ -168,19 +160,73 @@
                 </div>
             </div>
 
-            <!-- Section for the data table -->
             <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4">
                     Tabla de datos
                 </h2>
                 <div id="tarjetasDataTable" class="overflow-x-auto rounded-lg border border-gray-300 data-table-container">
-                    <!-- Table will be injected here by JavaScript -->
                     <div class="p-4 text-gray-500 text-center">
                         La tabla aparecerá cuando se carguen datos.
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="page-tarjetas-generator-copy" class="page-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
+            <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
+                Generador de Tarjetas 2 (Copia)
+            </h1>
+            <p class="text-center text-gray-600 mb-8">
+                Carga un archivo de Excel para generar un script de tarjetas (copia).
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        Paso 1: Carga tu archivo
+                    </h2>
+                    <div class="mb-4">
+                        <label for="tarjetasExcelFile_copy" class="block text-gray-700 font-medium mb-2">
+                            Selecciona tu Excel (.xlsx, .xls)
+                        </label>
+                        <input type="file" id="tarjetasExcelFile_copy" accept=".xlsx, .xls" class="w-full text-sm text-gray-500
+                            file:mr-4 file:py-2 file:px-4
+                            file:rounded-full file:border-0
+                            file:text-sm file:font-semibold
+                            file:bg-blue-50 file:text-blue-700
+                            hover:file:bg-blue-100 transition-colors duration-200" />
+                    </div>
+                    <button id="tarjetasGenerateBtn_copy" class="w-full bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl hover:bg-indigo-700 transition-transform duration-200 transform hover:scale-105 mt-6">
+                        Generar Script
+                    </button>
+                    <div id="tarjetasStatusMessage_copy" class="mt-4 text-center text-gray-600"></div>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                        Paso 2: Descarga tu archivo
+                    </h2>
+                    <textarea id="tarjetasScriptOutput_copy" class="w-full h-80 p-4 font-mono text-sm bg-gray-100 rounded-lg border border-gray-300 resize-none outline-none 
+                        focus:ring-2 focus:ring-indigo-500 transition-shadow duration-200" readonly placeholder="Tu script de tarjetas aparecerá aquí..."></textarea>
+                    <div class="flex flex-col sm:flex-row gap-4 mt-4">
+                        <button id="tarjetasDownloadBtn_copy" class="w-full bg-gray-800 text-white font-bold py-3 px-6 rounded-xl hover:bg-gray-900 transition-transform duration-200 transform hover:scale-105">
+                            Descargar Script
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-white p-6 rounded-2xl shadow-lg w-full max-w-4xl border border-gray-200">
+                <h2 class="text-xl font-semibold text-gray-700 mb-4">
+                    Tabla de datos
+                </h2>
+                <div id="tarjetasDataTable_copy" class="overflow-x-auto rounded-lg border border-gray-300 data-table-container">
+                    <div class="p-4 text-gray-500 text-center">
+                        La tabla aparecerá cuando se carguen datos.
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <script>
@@ -214,7 +260,6 @@
                     setActiveLink(link);
                 });
             });
-
             // Initial state: show the AHK generator page
             showPage('ahk-generator');
 
@@ -268,8 +313,6 @@
                     });
                     tbody.appendChild(tr);
                 });
-                table.appendChild(tbody);
-
                 container.innerHTML = '';
                 container.appendChild(table);
             }
@@ -301,7 +344,6 @@
                         const firstSheetName = workbook.SheetNames[0];
                         const worksheet = workbook.Sheets[firstSheetName];
                         loadedAhkData = XLSX.utils.sheet_to_json(worksheet);
-
                         if (loadedAhkData.length === 0) {
                             ahkStatusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
                             return;
@@ -331,7 +373,6 @@
                 }
                 downloadFile(scriptContent, 'script.ahk');
             });
-
             ahkGenerateBtn.addEventListener('click', () => {
                 if (loadedAhkData.length === 0) {
                     ahkStatusMessage.textContent = 'Por favor, carga un archivo de Excel primero.';
@@ -341,7 +382,6 @@
                 ahkScriptOutput.value = ahkScript;
                 ahkStatusMessage.textContent = '¡Script y tabla generados correctamente!';
             });
-            
             function generateAhkScript(data) {
                 let script = '; Script para carga de manzanas.\n';
                 script += ';\n';
@@ -363,7 +403,6 @@
                 const claveHeader = findColumnHeader(firstRow, ['CLAVE', 'CLAVE_CATASTRAL']);
                 const interiorHeader = findColumnHeader(firstRow, ['INTERIOR', 'INTERIOR_ID']);
                 const prototipoHeader = findColumnHeader(firstRow, ['PROTOTIPOCLAVE', 'PROTOTIPO']);
-
                 if (!claveHeader || !interiorHeader || !prototipoHeader) {
                     return '; ERROR: El archivo cargado no es para el generador AHK. No se encontraron las columnas necesarias (CLAVE, INTERIOR, PROTOTIPOCLAVE).';
                 }
@@ -419,88 +458,160 @@
                 return script;
             }
 
-            // --- Tarjetas Script Generator Logic ---
+            // --- Tarjetas Script Generator Logic (Original) ---
             const tarjetasFileInput = document.getElementById('tarjetasExcelFile');
             const tarjetasGenerateBtn = document.getElementById('tarjetasGenerateBtn');
             const tarjetasScriptOutput = document.getElementById('tarjetasScriptOutput');
             const tarjetasDownloadBtn = document.getElementById('tarjetasDownloadBtn');
             const tarjetasStatusMessage = document.getElementById('tarjetasStatusMessage');
             const tarjetasDataTableContainer = document.getElementById('tarjetasDataTable');
-
-            
             let loadedTarjetasData = []; // Store the parsed data
 
-            tarjetasFileInput.addEventListener('change', (e) => {
-                tarjetasScriptOutput.value = '';
-                tarjetasDataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">La tabla aparecerá cuando se carguen datos.</div>';
-                
-                if (e.target.files.length === 0) {
-                    tarjetasStatusMessage.textContent = 'Por favor, selecciona un archivo de Excel.';
-                    return;
-                }
-                tarjetasStatusMessage.textContent = 'Cargando archivo...';
-                const file = e.target.files[0];
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const data = new Uint8Array(e.target.result);
-                        const workbook = XLSX.read(data, { type: 'array' });
-                        const firstSheetName = workbook.SheetNames[0];
-                        const worksheet = workbook.Sheets[firstSheetName];
-                        loadedTarjetasData = XLSX.utils.sheet_to_json(worksheet);
-
-                        if (loadedTarjetasData.length === 0) {
-                            tarjetasStatusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
-                            return;
-                        }
-                        
-                        const headers = Object.keys(loadedTarjetasData[0] || {});
-                        displayDataTable(loadedTarjetasData, tarjetasDataTableContainer, headers);
-                        tarjetasStatusMessage.textContent = 'Archivo cargado. Haz clic en "Generar Script" para continuar.';
-                    } catch (error) {
-                        tarjetasStatusMessage.textContent = 'Error procesando el archivo. Asegúrate de que sea un archivo de Excel válido.';
-                        console.error('File processing error: ', error);
-                    }
-                };
-                reader.onerror = function(e) {
-                    tarjetasStatusMessage.textContent = 'Error al leer el archivo.';
-                    console.error('File read error: ', e);
-                };
-                reader.readAsArrayBuffer(file);
+            setupTarjetasGenerator({
+                fileInput: tarjetasFileInput,
+                generateBtn: tarjetasGenerateBtn,
+                scriptOutput: tarjetasScriptOutput,
+                downloadBtn: tarjetasDownloadBtn,
+                statusMessage: tarjetasStatusMessage,
+                dataTableContainer: tarjetasDataTableContainer,
+                loadedData: loadedTarjetasData,
+                dataName: 'loadedTarjetasData',
+                generatorFunction: generateTarjetasScript
             });
 
-            tarjetasGenerateBtn.addEventListener('click', () => {
-                if (loadedTarjetasData.length === 0) {
-                    tarjetasStatusMessage.textContent = 'Por favor, carga un archivo de Excel primero.';
-                    return;
-                }
+            // --- Tarjetas Script Generator Logic (DUPLICATE COPY) ---
+            // NOTE: All IDs are postfixed with '_copy'
+            const tarjetasFileInput_copy = document.getElementById('tarjetasExcelFile_copy');
+            const tarjetasGenerateBtn_copy = document.getElementById('tarjetasGenerateBtn_copy');
+            const tarjetasScriptOutput_copy = document.getElementById('tarjetasScriptOutput_copy');
+            const tarjetasDownloadBtn_copy = document.getElementById('tarjetasDownloadBtn_copy');
+            const tarjetasStatusMessage_copy = document.getElementById('tarjetasStatusMessage_copy');
+            const tarjetasDataTableContainer_copy = document.getElementById('tarjetasDataTable_copy');
+            let loadedTarjetasData_copy = []; // Store the parsed data
 
-                const tarjetasScript = generateTarjetasScript(loadedTarjetasData);
-                tarjetasScriptOutput.value = tarjetasScript;
-                tarjetasStatusMessage.textContent = '¡Script generado correctamente! Descarga tu archivo.';
-            });
-
-            tarjetasDownloadBtn.addEventListener('click', () => {
-                const scriptContent = tarjetasScriptOutput.value;
-                if (!scriptContent) {
-                    tarjetasStatusMessage.textContent = 'No hay script para descargar. Por favor, genéralo primero.';
-                    return;
-                }
-
-                let filename = 'tarjeta_script.ahk';
-                if (loadedTarjetasData.length > 0) {
-                    const obraHeader = findColumnHeader(loadedTarjetasData[0], ['OBRA']);
-                    if (obraHeader) {
-                        const obraValue = loadedTarjetasData[0][obraHeader];
-                        if (obraValue) {
-                           const sanitizedValue = String(obraValue).replace(/[^a-z0-9]/gi, '_').toLowerCase();
-                           filename = `tarjeta_${sanitizedValue}.ahk`;
-                        }
-                    }
-                }
-                downloadFile(scriptContent, filename);
+            // Use a helper function to avoid duplicating the entire event listener block
+            setupTarjetasGenerator({
+                fileInput: tarjetasFileInput_copy,
+                generateBtn: tarjetasGenerateBtn_copy,
+                scriptOutput: tarjetasScriptOutput_copy,
+                downloadBtn: tarjetasDownloadBtn_copy,
+                statusMessage: tarjetasStatusMessage_copy,
+                dataTableContainer: tarjetasDataTableContainer_copy,
+                loadedData: loadedTarjetasData_copy,
+                dataName: 'loadedTarjetasData_copy',
+                generatorFunction: generateTarjetasScript_copy // Use the copy function
             });
             
+            // --- Helper to set up Tarjetas generator logic ---
+            function setupTarjetasGenerator({ fileInput, generateBtn, scriptOutput, downloadBtn, statusMessage, dataTableContainer, loadedData, dataName, generatorFunction }) {
+                
+                // File Input Listener
+                fileInput.addEventListener('change', (e) => {
+                    scriptOutput.value = '';
+                    dataTableContainer.innerHTML = '<div class="p-4 text-gray-500 text-center">La tabla aparecerá cuando se carguen datos.</div>';
+                    
+                    if (e.target.files.length === 0) {
+                        statusMessage.textContent = 'Por favor, selecciona un archivo de Excel.';
+                        return;
+                    }
+                    statusMessage.textContent = 'Cargando archivo...';
+                    
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        try {
+                            const data = new Uint8Array(e.target.result);
+                            const workbook = XLSX.read(data, { type: 'array' });
+                            const firstSheetName = workbook.SheetNames[0];
+                            const worksheet = workbook.Sheets[firstSheetName];
+                            
+                            // Assign data to the correct variable dynamically
+                            if (dataName === 'loadedTarjetasData') {
+                                loadedTarjetasData = XLSX.utils.sheet_to_json(worksheet);
+                                loadedData = loadedTarjetasData; // Update the local reference
+                            } else if (dataName === 'loadedTarjetasData_copy') {
+                                loadedTarjetasData_copy = XLSX.utils.sheet_to_json(worksheet);
+                                loadedData = loadedTarjetasData_copy; // Update the local reference
+                            }
+
+
+                            if (loadedData.length === 0) {
+                                statusMessage.textContent = 'El archivo de Excel está vacío o tiene un formato incorrecto.';
+                                return;
+                            }
+                            
+                            const headers = Object.keys(loadedData[0] || {});
+                            displayDataTable(loadedData, dataTableContainer, headers);
+                            statusMessage.textContent = 'Archivo cargado. Haz clic en "Generar Script" para continuar.';
+                        } catch (error) {
+                            statusMessage.textContent = 'Error procesando el archivo. Asegúrate de que sea un archivo de Excel válido.';
+                            console.error('File processing error: ', error);
+                        }
+                    };
+                    reader.onerror = function(e) {
+                        statusMessage.textContent = 'Error al leer el archivo.';
+                        console.error('File read error: ', e);
+                    };
+                    reader.readAsArrayBuffer(file);
+                });
+
+                // Generate Button Listener
+                generateBtn.addEventListener('click', () => {
+                    let dataToUse;
+                    if (dataName === 'loadedTarjetasData') {
+                        dataToUse = loadedTarjetasData;
+                    } else if (dataName === 'loadedTarjetasData_copy') {
+                        dataToUse = loadedTarjetasData_copy;
+                    }
+                    
+                    if (dataToUse.length === 0) {
+                        statusMessage.textContent = 'Por favor, carga un archivo de Excel primero.';
+                        return;
+                    }
+
+                    const tarjetasScript = generatorFunction(dataToUse);
+                    scriptOutput.value = tarjetasScript;
+                    statusMessage.textContent = '¡Script generado correctamente! Descarga tu archivo.';
+                });
+
+                // Download Button Listener
+                downloadBtn.addEventListener('click', () => {
+                    const scriptContent = scriptOutput.value;
+                    if (!scriptContent) {
+                        statusMessage.textContent = 'No hay script para descargar. Por favor, genéralo primero.';
+                        return;
+                    }
+
+                    let filename = 'tarjeta_script.ahk';
+                    let dataToUse;
+                    if (dataName === 'loadedTarjetasData') {
+                        dataToUse = loadedTarjetasData;
+                        filename = 'tarjeta_script_original.ahk';
+                    } else if (dataName === 'loadedTarjetasData_copy') {
+                        dataToUse = loadedTarjetasData_copy;
+                        filename = 'tarjeta_script_copy.ahk'; // Default name for the copy
+                    }
+                    
+                    if (dataToUse.length > 0) {
+                        const obraHeader = findColumnHeader(dataToUse[0], ['OBRA']);
+                        if (obraHeader) {
+                            const obraValue = dataToUse[0][obraHeader];
+                            if (obraValue) {
+                                const sanitizedValue = String(obraValue).replace(/[^a-z0-9]/gi, '_').toLowerCase();
+                                // Customize file naming based on the generator copy
+                                if (dataName === 'loadedTarjetasData') {
+                                    filename = `tarjeta_${sanitizedValue}.ahk`;
+                                } else if (dataName === 'loadedTarjetasData_copy') {
+                                    filename = `tarjeta_copy_${sanitizedValue}.ahk`; 
+                                }
+                            }
+                        }
+                    }
+                    downloadFile(scriptContent, filename);
+                });
+            }
+
+            // --- Tarjetas Script Generator Function (Original) ---
             function generateTarjetasScript(data) {
                 let script = '; Script para carga de tarjetas.\n';
                 script += ';\n';
@@ -517,7 +628,6 @@
                 script += '^b::\n';
                 script += '     Sleep, 1000\n';
                 script += '\n';
-
                 const firstRow = data[0] || {};
                 const tarjetaHeader = findColumnHeader(firstRow, ['TARJETA']);
                 const nombreHeader = findColumnHeader(firstRow, ['NOMBRE']);
@@ -526,7 +636,6 @@
                 const unidadHeader = findColumnHeader(firstRow, ['UNIDAD']);
                 const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
                 const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
-
                 if (!tarjetaHeader || !nombreHeader || !descripcionHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
                     return '; ERROR: El archivo cargado no es para el generador de Tarjetas. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
                 }
@@ -652,6 +761,161 @@
                 script += '     ExitApp\n';
                 script += 'return\n';
                 return script;
+            }
+
+            // --- Tarjetas Script Generator Function (DUPLICATE COPY) ---
+            // This is the function you should modify for the third option.
+            function generateTarjetasScript_copy(data) {
+                // START OF COPY
+                let script = '; Script para carga de tarjetas (COPIA).\n'; // Changed comment
+                script += ';\n';
+                script += '; === CONFIGURACION ===\n';
+                script += 'SleepTime := 500\n';
+                script += 'SetKeyDelay, 50, 50\n';
+                script += 'SetWorkingDir, %A_ScriptDir%\n';
+                script += 'ClickX := 0 ; Establece las coordenadas X de tu primer campo de entrada\n';
+                script += 'ClickY := 0 ; Establece las coordenadas Y de tu primer campo de entrada\n';
+                script += '\n';
+                script += '; Presiona ctrl y C para correr el script\n'; // Changed shortcut
+                script += '; Presiona Esc para detenerlo en cualquier momento\n';
+                script += '\n';
+                script += '^c::\n'; // Changed shortcut
+                script += '     Sleep, 1000\n';
+                script += '\n';
+                const firstRow = data[0] || {};
+                const tarjetaHeader = findColumnHeader(firstRow, ['TARJETA']);
+                const nombreHeader = findColumnHeader(firstRow, ['NOMBRE']);
+                const descripcionHeader = findColumnHeader(firstRow, ['DESCRIPCION', 'DESCRIPCIÓN', 'DESCRIPCION_LARGA']);
+                const cantidadHeader = findColumnHeader(firstRow, ['CANTIDAD']);
+                const unidadHeader = findColumnHeader(firstRow, ['UNIDAD']);
+                const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
+                const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
+                if (!tarjetaHeader || !nombreHeader || !descripcionHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
+                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas (Copia). No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
+                }
+
+                data.forEach((row, index) => {
+                    try {
+                        const tarjeta = row[tarjetaHeader] || '';
+                        const nombre = row[nombreHeader] || '';
+                        const descripcion = row[descripcionHeader] || '';
+                        const cantidad = row[cantidadHeader] || '';
+                        const unidad = row[unidadHeader] || '';
+                        const precioMoneda = row[precioMonedaHeader] || '';
+                        const contratacion = row[contratacionHeader] || '';
+
+                        script += `     ; --- Fila ${index + 1} ---\n`;
+                        script += `     ; TARJETA: ${tarjeta}, NOMBRE: ${nombre}, CANTIDAD: ${cantidad}, UNIDAD: ${unidad}, PRECIO MONEDA: ${precioMoneda}, CONTRATACION: ${contratacion}\n`;
+                        script += `     Click, 1800, 500\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     MouseMove, 1800, 210, 0\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1336, 210\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1336, 210\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${String(nombre).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, Normal\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1670, 318\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, ${String(unidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1360, 380\n`;
+                        script += `     Send, ${String(descripcion).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1838, 154\n`;
+                        script += `     Sleep, 6000\n`;
+                        script += `     ; --- Fin de primera parte ---\n`;
+                        script += `     Click, 1824, 204\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1737, 725\n`;
+                        script += `     Click, 350, 275\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Click, 1628, 275\n`;
+                        script += `     Send, 2\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Click, 700, 280\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Click, 1736, 220\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 130, 470\n`;
+                        script += `     Click, 1355, 462\n`;
+                        script += `     Send, ${String(cantidad).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Tab}\n`;
+                        script += `     Send, ${String(precioMoneda).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Click, 1816, 342\n`;
+                        script += `     Sleep, 3000\n`;
+                        script += `     Click, 1866, 206\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     ; --- Fin de segunda parte ---\n`;
+                        script += `     Click, 1924, 1010\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1924, 1010\n`;
+                        script += `     Click, 210, 761\n`;
+                        script += `     Send, ${String(contratacion).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Send, {Enter}\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 680, 750\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1926, 1016\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1600, 755\n`;
+                        script += `     Send, 1\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1795, 755\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     ; --- Fin de tercera parte ---\n`;
+                        script += `     Click, 1325, 288\n`;
+                        script += `     Sleep, 2000\n`;
+                        script += `     Send, ${String(tarjeta).replace(/%/g, '%%').replace(/ /g, '{Space}')}\n`;
+                        script += `     Click, 1830, 231\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1352, 411\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1888, 138\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     ; --- Fin de cuarta parte ---\n`;
+                        script += `     Click, 1926, 1015\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1600, 782\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Send, 1\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1924, 133\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1924, 133\n`;
+                        script += `     Sleep, 1000\n`;
+                        script += `     Click, 1825, 210\n`;
+                        script += `     Sleep, 5000\n`;
+                        script += `     Click, 500, 271\n`;
+                        script += `     Sleep, 10000\n`;
+                        script += '\n';
+                    } catch (e) {
+                        script += `     ; --- Fila ${index + 1} - ERROR: No se pudo procesar la fila debido a un formato incorrecto. ---\n`;
+                        script += '     ; ' + JSON.stringify(row) + '\n';
+                        script += `     ; Por favor, asegúrate de que las columnas TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, y CONTRATACION existan en tu archivo de Excel.\n`;
+                        script += '\n';
+                    }
+                });
+                script += '     MsgBox, Proceso de tarjetas (COPIA) ha finalizado!\n'; // Changed message
+                script += 'return\n';
+                script += '\n';
+                script += 'Esc::\n';
+                script += '     ExitApp\n';
+                script += 'return\n';
+                return script;
+                // END OF COPY
             }
         });
     </script>
