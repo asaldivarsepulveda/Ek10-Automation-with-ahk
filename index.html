@@ -54,7 +54,7 @@
                     <a href="#" data-page="tarjetas-generator" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas AHK</a>
                 </li>
                 <li>
-                    <a href="#" data-page="tarjetas-generator-copy" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas 2 (Copia)</a>
+                    <a href="#" data-page="tarjetas-generator-copy" class="sidebar-link block p-3 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors duration-200">Generador de Tarjetas Tipo 2</a>
                 </li>
             </ul>
         </nav>
@@ -174,10 +174,10 @@
 
         <div id="page-tarjetas-generator-copy" class="page-content hidden bg-white p-6 sm:p-8 rounded-2xl shadow-lg w-full max-w-4xl mx-auto border border-gray-200">
             <h1 class="text-3xl sm:text-4xl font-bold mb-4 text-center text-gray-800">
-                Generador de Tarjetas 2 (Copia)
+                Generador de Tarjetas Tipo 2
             </h1>
             <p class="text-center text-gray-600 mb-8">
-                Carga un archivo de Excel para generar un script de tarjetas (copia).
+                Carga un archivo de Excel para generar un script de tarjetas tipo 2.
             </p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-gray-50 p-6 rounded-xl border border-gray-200">
@@ -767,7 +767,7 @@
             // This is the function you should modify for the third option.
             function generateTarjetasScript_copy(data) {
                 // START OF COPY
-                let script = '; Script para carga de tarjetas (COPIA).\n'; // Changed comment
+                let script = '; Script para carga de tarjetas.\n'; // Changed comment
                 script += ';\n';
                 script += '; === CONFIGURACION ===\n';
                 script += 'SleepTime := 500\n';
@@ -791,7 +791,7 @@
                 const precioMonedaHeader = findColumnHeader(firstRow, ['PRECIO MONEDA']);
                 const contratacionHeader = findColumnHeader(firstRow, ['CONTRATACION']);
                 if (!tarjetaHeader || !nombreHeader || !descripcionHeader || !cantidadHeader || !unidadHeader || !precioMonedaHeader || !contratacionHeader) {
-                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas (Copia). No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
+                    return '; ERROR: El archivo cargado no es para el generador de Tarjetas tipo 2. No se encontraron las columnas necesarias (TARJETA, NOMBRE, CANTIDAD, UNIDAD, PRECIO MONEDA, CONTRATACION).';
                 }
 
                 data.forEach((row, index) => {
@@ -908,7 +908,7 @@
                         script += '\n';
                     }
                 });
-                script += '     MsgBox, Proceso de tarjetas (COPIA) ha finalizado!\n'; // Changed message
+                script += '     MsgBox, Proceso de tarjetas tipo 2 ha finalizado!\n'; // Changed message
                 script += 'return\n';
                 script += '\n';
                 script += 'Esc::\n';
